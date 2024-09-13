@@ -1,0 +1,21 @@
+services:
+  api:
+    restart: always
+    build:
+      context: ./api
+    ports:
+      - "9701:8080"
+    environment:
+      - LOG_LEVEL=debug
+      - DATABASE_URL=/root/gitprint.db
+    volumes:
+      - ./api/gitprint.db:/root/gitprint.db
+
+  ui:
+    restart: always
+    build:
+      context: ./ui
+    ports:
+      - "9702:3000"
+    environment:
+      - API_INTERNAL_ADDR=http://api:8080

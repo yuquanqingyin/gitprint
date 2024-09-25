@@ -25,16 +25,16 @@ func (h *Handler) githubCallback(c echo.Context) error {
 
 	// TODO: move to another endpoint
 	ghClient := git.NewClient(token)
-	orgs, _ := ghClient.GetUserOrgs()
-	fmt.Println(orgs)
+	// orgs, _ := ghClient.GetUserOrgs()
+	// fmt.Println(orgs)
 
-	repos, _ := ghClient.GetUserRepos()
-	fmt.Println(repos)
+	// repos, _ := ghClient.GetUserRepos()
+	// fmt.Println(repos)
 
-	repos, _ = ghClient.GetOrgRepos("12traits")
-	fmt.Println(repos)
+	// repos, _ = ghClient.GetOrgRepos("12traits")
+	// fmt.Println(repos)
 
-	res, _ := ghClient.DownloadRepo("plutov", "formulosity", "main")
+	res, _ := ghClient.DownloadRepo("ansible", "awx-operator", "")
 	fmt.Println(res)
 
 	return response.Ok(c, token)

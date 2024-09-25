@@ -3,9 +3,7 @@ package git
 import (
 	"context"
 	"fmt"
-	"io"
 	"os"
-	"path/filepath"
 	"time"
 
 	"github.com/google/go-github/v65/github"
@@ -15,14 +13,6 @@ import (
 type Client struct {
 	client   *github.Client
 	reposDir string
-}
-
-type Org struct {
-	Name string
-}
-
-type Repo struct {
-	Name string
 }
 
 type GetContentsResult struct {
@@ -37,74 +27,65 @@ func NewClient(accessToken string) *Client {
 	}
 }
 
-func (c *Client) GetUserOrgs() ([]Org, error) {
+func (c *Client) GetUserOrgs() ([]*github.Organization, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
 	log.Info("getting user orgs")
 
-	ghOrgs, _, err := c.client.Organizations.List(ctx, "", nil)
+	orgs, _, err := c.client.Organizations.List(ctx, "", nil)
 	if err != nil {
 		log.WithError(err).Error("failed to get user orgs")
 		return nil, err
-	}
-
-	orgs := make([]Org, len(ghOrgs))
-	for i, ghOrg := range ghOrgs {
-		orgs[i] = Org{
-			Name: ghOrg.GetLogin(),
-		}
 	}
 
 	return orgs, nil
 }
 
-func (c *Client) GetUserRepos() ([]Repo, error) {
+func (c *Client) GetUserRepos() ([]*github.Repository, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
 	log.Info("getting user repos")
 
-	ghRepos, _, err := c.client.Repositories.ListByAuthenticatedUser(ctx, nil)
+	repos, _, err := c.client.Repositories.ListByAuthenticatedUser(ctx, nil)
 	if err != nil {
 		log.WithError(err).Error("failed to get user orgs")
 		return nil, err
-	}
-
-	repos := make([]Repo, len(ghRepos))
-	for i, ghRepo := range ghRepos {
-		repos[i] = Repo{
-			Name: ghRepo.GetName(),
-		}
 	}
 
 	return repos, nil
 }
 
-func (c *Client) GetOrgRepos(org string) ([]Repo, error) {
+func (c *Client) GetOrgRepos(org string) ([]*github.Repository, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
 	log.Info("getting user repos")
 
-	ghRepos, _, err := c.client.Repositories.ListByOrg(ctx, org, nil)
+	repos, _, err := c.client.Repositories.ListByOrg(ctx, org, nil)
 	if err != nil {
 		log.WithError(err).Error("failed to get user orgs")
 		return nil, err
-	}
-
-	repos := make([]Repo, len(ghRepos))
-	for i, ghRepo := range ghRepos {
-		repos[i] = Repo{
-			Name: ghRepo.GetName(),
-		}
 	}
 
 	return repos, nil
 }
 
 func (c *Client) DownloadRepo(owner string, repo string, ref string) (*GetContentsResult, error) {
-	logCtx := log.With("owner", owner, "repo", repo, "ref", ref)
+	logCtx := log.With("owner", owner, "repo", repo)
+
+	// Get latest commit if ref is empty
+	if ref == "" {
+		var shaErr error
+		ref, shaErr = c.GetLatestCommitSHA(owner, repo)
+		if shaErr != nil {
+			logCtx.WithError(shaErr).Error("failed to get latest commit")
+			return nil, shaErr
+		}
+	}
+
+	logCtx = logCtx.With("ref", ref)
 	logCtx.Info("downloading repo")
 
 	res, err := c.getContents(owner, repo, ref, "")
@@ -117,73 +98,24 @@ func (c *Client) DownloadRepo(owner string, repo string, ref string) (*GetConten
 	return res, nil
 }
 
-func (c *Client) getContents(owner string, repo string, ref string, path string) (*GetContentsResult, error) {
-	res := &GetContentsResult{}
-
-	ctx, cancel := context.WithTimeout(context.Background(), 1*time.Minute)
+func (c *Client) GetLatestCommitSHA(owner string, repo string) (string, error) {
+	logCtx := log.With("owner", owner, "repo", repo)
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
-	_, directoryContent, _, err := c.client.Repositories.GetContents(ctx, owner, repo, path, &github.RepositoryContentGetOptions{
-		Ref: ref,
-	})
+	logCtx.Info("getting latest commit")
+
+	opts := &github.CommitsListOptions{}
+	opts.PerPage = 1
+	commits, _, err := c.client.Repositories.ListCommits(ctx, owner, repo, opts)
 	if err != nil {
-		return nil, err
+		logCtx.WithError(err).Error("failed to get latest commit")
+		return "", err
+	}
+	if len(commits) == 0 {
+		logCtx.Error("no commits found")
+		return "", fmt.Errorf("no commits found")
 	}
 
-	for _, item := range directoryContent {
-		switch *item.Type {
-		case "file":
-			localPath := filepath.Join(c.reposDir, *item.Path)
-			if err := c.downloadContents(owner, repo, ref, item, localPath); err != nil {
-				return nil, fmt.Errorf("failed to download file %s: %w", *item.Path, err)
-			}
-			res.Files++
-		case "dir":
-			dirRes, err := c.getContents(owner, repo, ref, *item.Path)
-			if err != nil {
-				return nil, fmt.Errorf("failed to download dir %s: %w", *item.Path, err)
-			}
-
-			res.Dirs++
-			res.Files += dirRes.Files
-			res.Dirs += dirRes.Dirs
-		}
-	}
-
-	return res, nil
-}
-
-func (c *Client) downloadContents(owner string, repo string, ref string, content *github.RepositoryContent, localPath string) error {
-	ctx, cancel := context.WithTimeout(context.Background(), 1*time.Minute)
-	defer cancel()
-
-	rc, _, err := c.client.Repositories.DownloadContents(ctx, owner, repo, *content.Path, &github.RepositoryContentGetOptions{
-		Ref: ref,
-	})
-	if err != nil {
-		return fmt.Errorf("failed to download file: %w", err)
-	}
-	defer rc.Close()
-
-	b, err := io.ReadAll(rc)
-	if err != nil {
-		return fmt.Errorf("failed to download file: %w", err)
-	}
-
-	err = os.MkdirAll(filepath.Dir(localPath), 0755)
-	if err != nil {
-		return fmt.Errorf("failed to create a local dir %s: %w", filepath.Dir(localPath), err)
-	}
-
-	f, err := os.Create(localPath)
-	if err != nil {
-		return fmt.Errorf("failed to create a file: %w", err)
-	}
-	defer f.Close()
-
-	if _, err := f.Write(b); err != nil {
-		return fmt.Errorf("failed to write a file: %w", err)
-	}
-
-	return nil
+	return *commits[0].SHA, nil
 }

@@ -9,7 +9,7 @@ func TestExtractAndFilterFiles(t *testing.T) {
 	tests := []struct {
 		path     string
 		isNilErr bool
-		files    int64
+		files    int
 	}{
 		{"notfound.tar.gz", false, 0},
 		{"./testdata/formulosity-0.1.5.tar.gz", false, 90},

@@ -12,7 +12,7 @@ import (
 )
 
 type ExtractAndFilterResult struct {
-	Files     int64
+	Files     int
 	OutputDir string
 }
 

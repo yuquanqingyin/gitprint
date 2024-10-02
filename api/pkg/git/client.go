@@ -14,15 +14,36 @@ import (
 )
 
 type Client struct {
-	client   *github.Client
-	reposDir string
+	accessToken string
+	client      *github.Client
+	reposDir    string
 }
 
 func NewClient(accessToken string) *Client {
 	return &Client{
-		client:   github.NewClient(nil).WithAuthToken(accessToken),
-		reposDir: os.Getenv("GITHUB_REPOS_DIR"),
+		accessToken: accessToken,
+		client:      github.NewClient(nil).WithAuthToken(accessToken),
+		reposDir:    os.Getenv("GITHUB_REPOS_DIR"),
 	}
+}
+
+func (c *Client) GetCurrentUser() (*User, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	log.Info("getting current user")
+
+	me, _, err := c.client.Users.Get(ctx, "")
+	if err != nil {
+		log.WithError(err).Error("failed to get current user")
+		return nil, err
+	}
+
+	return &User{
+		Username:    me.GetLogin(),
+		Email:       me.GetEmail(),
+		AccessToken: c.accessToken,
+	}, nil
 }
 
 func (c *Client) GetUserOrgs() ([]*github.Organization, error) {

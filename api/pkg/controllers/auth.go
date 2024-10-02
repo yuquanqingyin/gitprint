@@ -4,7 +4,10 @@ import (
 	"net/http"
 
 	"github.com/labstack/echo/v4"
+	"github.com/plutov/gitprint/api/pkg/auth"
+	"github.com/plutov/gitprint/api/pkg/git"
 	"github.com/plutov/gitprint/api/pkg/http/response"
+	"github.com/plutov/gitprint/api/pkg/log"
 )
 
 func (h *Handler) githubURL(c echo.Context) error {
@@ -21,5 +24,19 @@ func (h *Handler) githubCallback(c echo.Context) error {
 		return response.BadRequestDefaultMessage(c)
 	}
 
-	return response.Ok(c, token)
+	ghClient := git.NewClient(token)
+	user, err := ghClient.GetCurrentUser()
+	if err != nil {
+		return response.InternalError(c, "unable to get current user")
+	}
+
+	jwtToken, err := auth.FillJWT(user)
+	if err != nil {
+		log.WithError(err).Error("failed to fill jwt token")
+		return response.InternalError(c, "unable to create a session")
+	}
+
+	return response.Ok(c, echo.Map{
+		"jwt_token": jwtToken,
+	})
 }

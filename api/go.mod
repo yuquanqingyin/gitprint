@@ -3,6 +3,7 @@ module github.com/plutov/gitprint/api
 go 1.23.0
 
 require (
+	github.com/golang-jwt/jwt/v4 v4.5.0
 	github.com/google/go-github/v65 v65.0.0
 	github.com/labstack/echo/v4 v4.12.0
 	go.uber.org/zap v1.27.0

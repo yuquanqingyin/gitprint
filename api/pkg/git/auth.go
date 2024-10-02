@@ -20,6 +20,12 @@ type Auth struct {
 	states *TTLMap
 }
 
+type User struct {
+	Email       string `json:"email"`
+	Username    string `json:"username"`
+	AccessToken string `json:"access_token"`
+}
+
 func NewAuth() *Auth {
 	return &Auth{
 		conf:   getOAuthConfig(),

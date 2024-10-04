@@ -50,7 +50,10 @@ func getRandomState() string {
 	timestamp := time.Now().UnixNano()
 
 	b := make([]byte, 16)
-	rand.Read(b)
+	if _, err := rand.Read(b); err != nil {
+		log.WithError(err).Error("unable to generate random state")
+		return fmt.Sprintf("%x", sha256.Sum256([]byte(strconv.Itoa(int(timestamp)))))
+	}
 
 	salt := base64.URLEncoding.EncodeToString(b)
 

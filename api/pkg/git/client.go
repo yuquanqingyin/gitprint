@@ -106,6 +106,28 @@ func (c *Client) GetRepo(owner string, repo string) (*github.Repository, error) 
 	return repository, nil
 }
 
+func (c *Client) GetTopContributors(owner string, repo string) ([]*github.Contributor, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	log.Info("getting repo contributors")
+
+	opts := &github.ListContributorsOptions{
+		Anon: "false",
+	}
+	contributors, _, err := c.client.Repositories.ListContributors(ctx, owner, repo, opts)
+	if err != nil {
+		log.WithError(err).Error("failed to get repo contributors")
+		return nil, err
+	}
+
+	if len(contributors) > 50 {
+		contributors = contributors[:50]
+	}
+
+	return contributors, nil
+}
+
 type DownloadRepoResult struct {
 	Ref        string
 	OutputFile string

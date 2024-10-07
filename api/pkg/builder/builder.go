@@ -11,9 +11,10 @@ import (
 )
 
 const (
-	NodeTypeMeta    = "meta"
-	NodeTypeChapter = "chapter"
-	NodeTypeFile    = "file"
+	NodeTypeMeta         = "meta"
+	NodeTypeContributors = "contributors"
+	NodeTypeChapter      = "chapter"
+	NodeTypeFile         = "file"
 )
 
 type ContentMeta struct {
@@ -22,6 +23,16 @@ type ContentMeta struct {
 	ForksCount      int    `json:"forksCount"`
 	StargazersCount int    `json:"stargazersCount"`
 	License         string `json:"license"`
+}
+
+type Contributor struct {
+	Username      string `json:"username"`
+	AvatarURL     string `json:"avatarURL"`
+	Contributions int    `json:"contributions"`
+}
+
+type ContentContributors struct {
+	Contributors []Contributor `json:"contributors"`
 }
 
 type ContentChapter struct {
@@ -44,7 +55,7 @@ type Document struct {
 	Nodes []DocumentNode
 }
 
-func GenerateDocument(repo *github.Repository, outputDir string) (*Document, error) {
+func GenerateDocument(repo *github.Repository, contributors []*github.Contributor, outputDir string) (*Document, error) {
 	logCtx := log.With("repo", repo.GetFullName(), "outputDir", outputDir)
 	logCtx.Info("generating document")
 
@@ -60,6 +71,22 @@ func GenerateDocument(repo *github.Repository, outputDir string) (*Document, err
 			ForksCount:      repo.GetForksCount(),
 			StargazersCount: repo.GetStargazersCount(),
 			License:         repo.GetLicense().GetName(),
+		},
+	})
+
+	contributorsList := []Contributor{}
+	for _, c := range contributors {
+		contributorsList = append(contributorsList, Contributor{
+			Username:      c.GetLogin(),
+			AvatarURL:     c.GetAvatarURL(),
+			Contributions: c.GetContributions(),
+		})
+	}
+	doc.Nodes = append(doc.Nodes, DocumentNode{
+		Type:  NodeTypeContributors,
+		Title: "Top Contributors",
+		Content: ContentContributors{
+			Contributors: contributorsList,
 		},
 	})
 

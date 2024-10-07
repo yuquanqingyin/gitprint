@@ -16,22 +16,30 @@ func TestGenerateDocument(t *testing.T) {
 			Name: github.String("MIT"),
 		},
 	}
+	contributors := []*github.Contributor{
+		{
+			Login:         github.String("plutov"),
+			AvatarURL:     github.String("https://avatars.githubusercontent.com/u/1124859?v=4"),
+			Contributions: github.Int(100),
+		},
+	}
 
 	tests := []struct {
 		repository    *github.Repository
+		contributors  []*github.Contributor
 		outputDir     string
 		isNilErr      bool
 		nodesCount    int
 		chaptersCount int
 		rootReadme    bool
 	}{
-		{repo, "notfound", false, 0, 0, false},
-		{repo, "./testdata/testrepo", true, 18, 3, true},
+		{repo, contributors, "notfound", false, 0, 0, false},
+		{repo, contributors, "./testdata/testrepo", true, 19, 3, true},
 	}
 
 	for _, tt := range tests {
 		t.Run(tt.outputDir, func(t *testing.T) {
-			doc, err := GenerateDocument(tt.repository, tt.outputDir)
+			doc, err := GenerateDocument(tt.repository, tt.contributors, tt.outputDir)
 			if tt.isNilErr && err != nil {
 				t.Errorf("expecting nil error, got %v", err)
 			}

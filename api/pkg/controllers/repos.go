@@ -91,7 +91,12 @@ func (h *Handler) generate(c echo.Context) error {
 		return response.InternalError(c, "unable to get repo")
 	}
 
-	doc, err := builder.GenerateDocument(repository, outputDir)
+	contributors, err := ghClient.GetTopContributors(owner, repo)
+	if err != nil {
+		return response.InternalError(c, "unable to get repo contributors")
+	}
+
+	doc, err := builder.GenerateDocument(repository, contributors, outputDir)
 	if err != nil {
 		return response.InternalError(c, "unable to generate document")
 	}

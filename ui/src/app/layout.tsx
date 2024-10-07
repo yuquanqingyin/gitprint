@@ -13,7 +13,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="dark">
-      <body>{children}</body>
+      <body>
+        <header className="fixed top-0 z-50 flex h-16 w-full items-center justify-center border-b">
+          <a rel="nofollow" href="/" className="font-bold">
+            gitprint.me - Print your favourite Git repositories as PDF.
+          </a>
+        </header>
+        <main className="flex h-dvh flex-1 flex-col pt-16">{children}</main>
+      </body>
     </html>
   );
 }

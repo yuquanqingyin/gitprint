@@ -21,7 +21,7 @@ services:
     restart: always
     build:
       context: ./ui
+      args:
+        - NEXT_PUBLIC_API_ADDR=http://localhost:9701
     ports:
       - "9702:3000"
-    environment:
-      - API_INTERNAL_ADDR=http://api:8080

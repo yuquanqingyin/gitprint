@@ -57,15 +57,22 @@ func (h *Handler) getRepos(c echo.Context) error {
 	})
 }
 
+type repoRequest struct {
+	Owner string `query:"owner"`
+	Repo  string `query:"repo"`
+	Ref   string `query:"ref"`
+}
+
 func (h *Handler) downloadRepo(c echo.Context) error {
-	owner := c.QueryParam("owner")
-	repo := c.QueryParam("repo")
-	ref := c.QueryParam("ref")
+	req := new(repoRequest)
+	if err := c.Bind(req); err != nil {
+		return response.BadRequest(c, "invalid request")
+	}
 
 	user := c.Get("user").(*git.User)
 	ghClient := git.NewClient(user.AccessToken)
 
-	res, err := ghClient.DownloadRepo(owner, repo, ref)
+	res, err := ghClient.DownloadRepo(req.Owner, req.Repo, req.Ref)
 	if err != nil {
 		return response.InternalError(c, "unable to download repo")
 	}
@@ -79,29 +86,34 @@ func (h *Handler) downloadRepo(c echo.Context) error {
 }
 
 func (h *Handler) generate(c echo.Context) error {
-	owner := c.QueryParam("owner")
-	repo := c.QueryParam("repo")
+	req := new(repoRequest)
+	if err := c.Bind(req); err != nil {
+		return response.BadRequest(c, "invalid request")
+	}
 	outputDir := c.QueryParam("output_dir")
 
 	user := c.Get("user").(*git.User)
 	ghClient := git.NewClient(user.AccessToken)
 
-	repository, err := ghClient.GetRepo(owner, repo)
+	repository, err := ghClient.GetRepo(req.Owner, req.Repo)
 	if err != nil {
 		return response.InternalError(c, "unable to get repo")
 	}
 
-	contributors, err := ghClient.GetTopContributors(owner, repo)
+	contributors, err := ghClient.GetTopContributors(req.Owner, req.Repo)
 	if err != nil {
 		return response.InternalError(c, "unable to get repo contributors")
 	}
 
-	commitSHA, err := ghClient.GetLatestCommitSHA(owner, repo)
-	if err != nil {
-		return response.InternalError(c, "unable to get last commit SHA")
+	if req.Ref == "" {
+		var shaErr error
+		req.Ref, shaErr = ghClient.GetLatestCommitSHA(req.Owner, req.Repo)
+		if shaErr != nil {
+			return response.InternalError(c, "unable to get last commit SHA")
+		}
 	}
 
-	doc, err := builder.GenerateDocument(repository, contributors, commitSHA, outputDir)
+	doc, err := builder.GenerateDocument(repository, contributors, req.Ref, outputDir)
 	if err != nil {
 		return response.InternalError(c, "unable to generate document")
 	}

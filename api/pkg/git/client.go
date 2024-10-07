@@ -91,21 +91,6 @@ func (c *Client) GetOrgRepos(org string) ([]*github.Repository, error) {
 	return repos, nil
 }
 
-func (c *Client) GetRepo(owner string, repo string) (*github.Repository, error) {
-	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
-	defer cancel()
-
-	log.Info("getting repo")
-
-	repository, _, err := c.client.Repositories.Get(ctx, owner, repo)
-	if err != nil {
-		log.WithError(err).Error("failed to get repo")
-		return nil, err
-	}
-
-	return repository, nil
-}
-
 func (c *Client) GetTopContributors(owner string, repo string) ([]*github.Contributor, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
@@ -126,6 +111,21 @@ func (c *Client) GetTopContributors(owner string, repo string) ([]*github.Contri
 	}
 
 	return contributors, nil
+}
+
+func (c *Client) GetRepo(owner string, repo string) (*github.Repository, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	log.Info("getting repo")
+
+	repository, _, err := c.client.Repositories.Get(ctx, owner, repo)
+	if err != nil {
+		log.WithError(err).Error("failed to get repo")
+		return nil, err
+	}
+
+	return repository, nil
 }
 
 type DownloadRepoResult struct {

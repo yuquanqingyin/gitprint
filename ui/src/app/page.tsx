@@ -6,7 +6,9 @@ export default function Home() {
       <div className="pb-10 pt-10">
         <div className="mx-auto max-w-2xl px-4">
           <div className="flex flex-col gap-2 rounded-md border p-8">
-            <h1 className="text-lg font-semibold">Welcome to gitprint.me!</h1>
+            <h1 className="text-lg font-semibold">
+              {">"} Welcome to gitprint.me
+            </h1>
             <p className="py-2">
               Looking for a fun way to explore your favorite GitHub
               repositories? Tired of staring at the screen for hours on end? Or
@@ -33,6 +35,25 @@ export default function Home() {
             {/* TODO: detect if already signed in */}
             <a href={`${process.env.NEXT_PUBLIC_API_ADDR}/github/auth/url`}>
               Sign in with GitHub
+            </a>
+          </div>
+        </div>
+      </div>
+      <div className="pb-10">
+        <div className="mx-auto max-w-2xl px-4">
+          <div className="flex flex-col text-center pb-4">
+            <h1 className="text-lg font-semibold">Repositories of the day</h1>
+          </div>
+          <div className="mb-4 grid grid-cols-2 gap-2 px-4 sm:px-0">
+            <a className="cursor-pointer rounded-md border p-4">
+              <div className="text-sm font-semibold">neovim/neovim</div>
+              <div className="text-sm text-white">v0.10.2</div>
+              <div className="text-sm text-zinc-600">115MB</div>
+            </a>
+            <a className="cursor-pointer rounded-md border p-4">
+              <div className="text-sm font-semibold">oven-sh/bun</div>
+              <div className="text-sm text-white">v1.1.29</div>
+              <div className="text-sm text-zinc-600">69MB</div>
             </a>
           </div>
         </div>

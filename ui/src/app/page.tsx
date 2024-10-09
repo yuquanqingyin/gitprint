@@ -36,6 +36,9 @@ export default function Home() {
         <div className="mx-auto max-w-2xl px-4">
           <div className="flex flex-col text-center pb-4">
             <h1 className="text-lg font-semibold">Repositories of the day</h1>
+            <span className="text-sm text-gray-400">
+              Click to download the PDF
+            </span>
           </div>
           <div className="mb-4 grid grid-cols-2 gap-2 px-4 sm:px-0">
             <a className="cursor-pointer rounded-md border p-4">

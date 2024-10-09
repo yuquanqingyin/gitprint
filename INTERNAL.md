@@ -1,6 +1,6 @@
 # gitprint
 
-Flow:
+## Flow
 
 - Sign in with Github
 - Enter a public repo URL
@@ -25,6 +25,8 @@ Download repo contents flow:
 
 - Downlaod all contents of the repo into owner/repo/ref/...
 
+## TODO
+
 Pre Release TODO:
 - Logo, Favicon and OG Image
 - 3 top examples to download: Neovim...
@@ -32,3 +34,8 @@ Pre Release TODO:
 Post Release TODO:
 - global IP rate limit
 - per user download/generate rate limit
+
+## Additional information
+
+Domain name: gitprint.me
+Github OAuth App: https://github.com/settings/applications/2718171

@@ -1,5 +1,7 @@
 "use client";
 
+import Form from "../components/Form";
+
 export default function Home() {
   return (
     <div>
@@ -29,16 +31,7 @@ export default function Home() {
         </div>
         <div className="h-px w-full"></div>
       </div>
-      <div className="pb-10">
-        <div className="mx-auto max-w-2xl px-4">
-          <div className="flex flex-col gap-2 rounded-md border p-4 justify-center items-center">
-            {/* TODO: detect if already signed in */}
-            <a href={`${process.env.NEXT_PUBLIC_API_ADDR}/github/auth/url`}>
-              Sign in with GitHub
-            </a>
-          </div>
-        </div>
-      </div>
+      <div className="pb-10">{Form()}</div>
       <div className="pb-10">
         <div className="mx-auto max-w-2xl px-4">
           <div className="flex flex-col text-center pb-4">

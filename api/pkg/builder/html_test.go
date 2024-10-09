@@ -2,27 +2,20 @@ package builder
 
 import (
 	"bytes"
+	"os"
 	"testing"
 )
 
 func TestGenerateHTML(t *testing.T) {
 	tests := []struct {
-		name     string
-		doc      *Document
-		isNilErr bool
-		content  string
+		name       string
+		doc        *Document
+		isNilErr   bool
+		outputFile string
 	}{
-		{"empty", &Document{}, true, `<!doctype html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <title>TODO</title>
-    </head>
-    <body>
-        HELLO
-    </body>
-</html>
-`},
+		{"empty", &Document{
+			Title: "plutov/plutov",
+		}, true, "./testdata/test.html"},
 	}
 
 	for _, tt := range tests {
@@ -33,8 +26,11 @@ func TestGenerateHTML(t *testing.T) {
 				t.Errorf("expecting nil error, got %v", err)
 			}
 
-			if tt.isNilErr && w.String() != tt.content {
-				t.Errorf("expecting %s, got %s", tt.content, w.String())
+			if tt.isNilErr {
+				expected, _ := os.ReadFile(tt.outputFile)
+				if w.String() != string(expected) {
+					t.Errorf("expecting %s, got %s", string(expected), w.String())
+				}
 			}
 		})
 	}

@@ -34,3 +34,22 @@ jobs:
       - name: Run Tests
         working-directory: ./api
         run: go test -v -bench=. -race ./...
+
+  lint-ui:
+    name: Lint UI
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node_version: [20]
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use Node.js ${{ matrix.node_version }}
+        uses: actions/setup-node@v4
+        with:
+          node_version: ${{ matrix.node_version }}
+
+      - name: run CI
+        run: |
+          npm install
+          npm run lint

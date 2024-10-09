@@ -24,11 +24,12 @@ func NewRouter(h *Handler) *echo.Echo {
 	e.GET("/files", h.downloadExportFile)
 
 	// restricted endpoints
-	e.Use(h.authMiddleware)
-	e.GET("/github/orgs", h.getOrgs)
-	e.GET("/github/repos", h.getRepos)
-	e.GET("/github/repo/download", h.downloadRepo)
-	e.GET("/github/repo/generate", h.generate)
+	private := e.Group("/private")
+	private.Use(h.authMiddleware)
+	private.GET("/github/orgs", h.getOrgs)
+	private.GET("/github/repos", h.getRepos)
+	private.GET("/github/repo/download", h.downloadRepo)
+	private.GET("/github/repo/generate", h.generate)
 
 	return e
 }

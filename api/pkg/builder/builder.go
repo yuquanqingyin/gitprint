@@ -57,6 +57,7 @@ type DocumentNode struct {
 }
 
 type Document struct {
+	Title string
 	Nodes []DocumentNode
 }
 
@@ -66,6 +67,7 @@ func GenerateDocument(repo *github.Repository, contributors []*github.Contributo
 	logCtx.Info("generating document")
 
 	doc := &Document{
+		Title: repo.GetFullName(),
 		Nodes: []DocumentNode{},
 	}
 	doc.Nodes = append(doc.Nodes, DocumentNode{

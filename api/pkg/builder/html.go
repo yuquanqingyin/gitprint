@@ -34,7 +34,10 @@ func GenerateAndSaveHTMLFile(doc *Document, exportID string) error {
 
 	output := files.GetExportHTMLFile(exportID)
 
-	os.MkdirAll(output, 0755)
+	if err := os.MkdirAll(output, 0755); err != nil {
+		logCtx.WithError(err).Error("failed to create output directory")
+		return err
+	}
 	o, err := os.Create(output)
 	if err != nil {
 		logCtx.WithError(err).Error("failed to create output file")

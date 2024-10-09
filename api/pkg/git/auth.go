@@ -35,7 +35,7 @@ func NewAuth() *Auth {
 
 func getOAuthConfig() *oauth2.Config {
 	redirectHost := os.Getenv("GITHUB_REDIRECT_HOST")
-	redirectURL := fmt.Sprintf("%s/github/auth/callback", redirectHost)
+	redirectURL := fmt.Sprintf("%s/callback", redirectHost)
 
 	return &oauth2.Config{
 		RedirectURL:  redirectURL,
@@ -82,7 +82,7 @@ func (a *Auth) GetAccessToken(code string, state string) (string, error) {
 	token, err := a.conf.Exchange(ctx, code)
 	if err != nil {
 		logCtx.WithError(err).Error("exchange failed")
-		return "", err
+		return "", fmt.Errorf("exchange failed")
 	}
 
 	a.states.Delete(state)

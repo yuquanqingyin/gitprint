@@ -19,7 +19,7 @@ func FillJWT(user *git.User) (string, error) {
 	claims := &SessionClaims{
 		User: user,
 	}
-	claims.ExpiresAt = time.Now().Add(time.Hour * 24 * 30).Unix()
+	claims.ExpiresAt = time.Now().Add(time.Hour * 24 * 30).UTC().Unix()
 
 	// Create token
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)

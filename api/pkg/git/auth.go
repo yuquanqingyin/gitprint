@@ -29,7 +29,7 @@ type User struct {
 func NewAuth() *Auth {
 	return &Auth{
 		conf:   getOAuthConfig(),
-		states: NewTTLMap(100, 3600),
+		states: NewTTLMap(1000, 3600),
 	}
 }
 

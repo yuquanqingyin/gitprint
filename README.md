@@ -6,9 +6,14 @@ Run:
 make run
 ```
 
-Run Tests:
+Test:
 
 ```
-cd api
 make test
+```
+
+Lint:
+
+```
+make lint
 ```

@@ -39,7 +39,7 @@ export default function Home() {
               Click to download the PDF
             </span>
           </div>
-          <div className="mb-4 grid grid-cols-2 gap-2 px-4">
+          <div className="mb-4 grid grid-cols-2 gap-2">
             <a className="cursor-pointer rounded-md border p-4">
               <div className="text-sm font-semibold">neovim/neovim</div>
               <div className="text-sm text-white">v0.10.2</div>

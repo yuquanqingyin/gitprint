@@ -4,6 +4,7 @@ import (
 	"html/template"
 	"io"
 	"os"
+	"path/filepath"
 
 	"github.com/plutov/gitprint/api/pkg/files"
 	"github.com/plutov/gitprint/api/pkg/log"
@@ -34,7 +35,7 @@ func GenerateAndSaveHTMLFile(doc *Document, exportID string) (string, error) {
 
 	output := files.GetExportHTMLFile(exportID)
 
-	if err := os.MkdirAll(output, 0755); err != nil {
+	if err := os.MkdirAll(filepath.Dir(output), 0755); err != nil {
 		logCtx.WithError(err).Error("failed to create output directory")
 		return "", err
 	}

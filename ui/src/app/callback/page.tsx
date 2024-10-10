@@ -39,7 +39,7 @@ export default function Callback() {
     <div>
       <div className="pt-20">
         <div className="mx-auto max-w-xl px-4">
-          <div className="flex flex-col gap-2 rounded-md border p-8 text-center">
+          <div className="flex flex-col rounded-md border p-8 text-center">
             <p className="py-2">Authenticating...</p>
           </div>
         </div>

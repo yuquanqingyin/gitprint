@@ -18,6 +18,7 @@ export default function Form() {
   const [token, setToken] = useState<string | undefined>();
   const [repo, setRepo] = useState<string>("");
   const [ref, setRef] = useState<string>("");
+  const [exportId, setExportId] = useState<string>("");
   const [progress, setProgress] = useState<ProgressStatus>(ProgressStatus.None);
   const [log, setLog] = useState<Array<string>>([]);
 
@@ -51,6 +52,7 @@ export default function Form() {
       setProgress(ProgressStatus.Generating);
       setLog((log) => [...log, "DONE", "Generating PDF..."]);
 
+      setExportId(res.data.exportID);
       const generateRes = await generate(
         token as string,
         repo,
@@ -158,6 +160,15 @@ export default function Form() {
         <div className="flex flex-col gap-2 rounded-md border p-4 mt-2">
           <h1 className="text-teal-500">{">"} LOG:</h1>
           <pre className="text-sm">{log.join("\n")}</pre>
+          {progress === ProgressStatus.Done && (
+            <p>
+              <a
+                href={`${process.env.NEXT_PUBLIC_API_ADDR}/files?export_id=${exportId}&ext=pdf`}
+              >
+                Download PDF
+              </a>
+            </p>
+          )}
         </div>
       )}
     </div>

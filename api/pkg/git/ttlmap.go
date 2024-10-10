@@ -53,6 +53,14 @@ func (m *TTLMap) Ok(k string) bool {
 	return false
 }
 
+func (m *TTLMap) Exists(k string) bool {
+	m.l.Lock()
+	defer m.l.Unlock()
+	_, ok := m.m[k]
+
+	return ok
+}
+
 func (m *TTLMap) Delete(k string) {
 	m.l.Lock()
 	defer m.l.Unlock()

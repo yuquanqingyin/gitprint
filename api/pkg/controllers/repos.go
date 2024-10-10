@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"errors"
+	"os"
 	"strings"
 
 	"github.com/labstack/echo/v4"
@@ -39,13 +40,19 @@ func (r *repoRequest) GetOwnerAndRepo() (string, string) {
 
 func (h *Handler) downloadRepo(c echo.Context) error {
 	req := new(repoRequest)
-	c.Bind(req)
+	if err := c.Bind(req); err != nil {
+		return response.BadRequest(c, "invalid request")
+	}
 	if err := req.Validate(); err != nil {
 		return response.BadRequest(c, err.Error())
 	}
 	owner, repo := req.GetOwnerAndRepo()
 
 	user := c.Get("user").(*git.User)
+	if h.Services.GenerateRateLimiter.Exists(user.Username) {
+		return response.Forbidden(c, "rate limit exceeded")
+	}
+
 	ghClient := git.NewClient(user.AccessToken)
 
 	res, err := ghClient.DownloadRepo(owner, repo, req.Ref)
@@ -63,7 +70,9 @@ func (h *Handler) downloadRepo(c echo.Context) error {
 
 func (h *Handler) generate(c echo.Context) error {
 	req := new(repoRequest)
-	c.Bind(req)
+	if err := c.Bind(req); err != nil {
+		return response.BadRequest(c, "invalid request")
+	}
 	if err := req.Validate(); err != nil {
 		return response.BadRequest(c, err.Error())
 	}
@@ -74,6 +83,9 @@ func (h *Handler) generate(c echo.Context) error {
 	}
 
 	user := c.Get("user").(*git.User)
+	if h.Services.GenerateRateLimiter.Exists(user.Username) {
+		return response.Forbidden(c, "rate limit exceeded")
+	}
 	ghClient := git.NewClient(user.AccessToken)
 
 	repository, err := ghClient.GetRepo(owner, repo)
@@ -107,6 +119,10 @@ func (h *Handler) generate(c echo.Context) error {
 	_, err = builder.GenerateAndSavePDFFile(htmlOut, exportID)
 	if err != nil {
 		return response.InternalError(c, "unable to save pdf file")
+	}
+
+	if os.Getenv("ENV") != "local" {
+		h.Services.GenerateRateLimiter.Put(user.Username)
 	}
 
 	return response.Ok(c, "ok")

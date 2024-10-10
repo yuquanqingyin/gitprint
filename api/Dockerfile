@@ -17,5 +17,6 @@ FROM alpine:latest
 RUN apk --no-cache add ca-certificates tzdata bash
 WORKDIR /root
 COPY --from=builder /root/server ./server
+COPY --from=builder /root/pkg/builder/templates ./templates
 
 CMD ["./server"]

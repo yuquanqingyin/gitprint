@@ -3,7 +3,22 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "gitprint.me",
-  description: "Print your favorite Git repositories as PDF.",
+  description: "Print your favorite Git repositories as PDF",
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    title: "gitprint.me",
+    description: "Print your favorite Git repositories as PDF",
+    siteName: "gitprint.me",
+    images: [
+      {
+        url: "/logo.png",
+      },
+    ],
+  },
+  icons: {
+    icon: "/favicon.ico",
+  },
 };
 
 export default function RootLayout({
@@ -20,6 +35,22 @@ export default function RootLayout({
           </a>
         </header>
         <main className="flex flex-col">{children}</main>
+        <footer className="flex w-full items-center justify-center border-t">
+          <div className="flex justify-center p-4 text-sm">
+            <span className="mx-2">v0.1.0</span>
+            <span className="mx-2">•</span>
+            <span className="mx-2">
+              Made by{" "}
+              <a rel="nofollow" href="https://x.com/pliutau">
+                @pliutau
+              </a>
+            </span>
+            <span className="mx-2">•</span>
+            <a rel="nofollow" href="/docs">
+              How it works
+            </a>
+          </div>
+        </footer>
       </body>
     </html>
   );

@@ -44,7 +44,7 @@ func GenerateExportID() string {
 }
 
 func ValidateExportID(exportID string) error {
-	if len(exportID) != 32 {
+	if len(exportID) != 64 {
 		return fmt.Errorf("invalid export_id")
 	}
 

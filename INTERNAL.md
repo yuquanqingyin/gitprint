@@ -18,3 +18,5 @@ Github OAuth App (prod): https://github.com/settings/applications/2736065
 - Gotenberg
 - Hetzner Cloud
 - Let's Encrypt
+- Nginx
+- Docker

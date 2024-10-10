@@ -42,7 +42,7 @@ export async function call(path: string, init?: RequestInit) {
   }
 }
 
-export async function post(path: string, payload: object) {
+export async function post(path: string, payload: object, jwt?: string) {
   const headers = {
     "Content-Type": "application/json",
     Authorization: "",

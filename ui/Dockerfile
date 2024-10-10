@@ -9,6 +9,7 @@ COPY . .
 
 ENV NODE_ENV=production
 # NEXT_PUBLIC_API_ADDR is passed as build arg
+ARG NEXT_PUBLIC_API_ADDR
 ENV NEXT_PUBLIC_API_ADDR=${NEXT_PUBLIC_API_ADDR}
 RUN npm run build
 

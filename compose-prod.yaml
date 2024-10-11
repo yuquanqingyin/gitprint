@@ -35,6 +35,7 @@ services:
       - "9703:3000"
 
   nginx:
+    restart: always
     image: nginx:latest
     depends_on:
       - ui
@@ -48,6 +49,7 @@ services:
       - "443:443"
 
   certbot:
+    restart: always
     image: certbot/certbot:latest
     volumes:
       - ./conf:/etc/letsencrypt

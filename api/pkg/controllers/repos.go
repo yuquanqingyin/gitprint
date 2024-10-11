@@ -52,7 +52,7 @@ func (h *Handler) downloadRepo(c echo.Context) error {
 	owner, repo := req.GetOwnerAndRepo()
 
 	user := c.Get("user").(*git.User)
-	if h.Services.GenerateRateLimiter.Exists(user.Username) {
+	if h.Services.GenerateRateLimiter.Exists(user.Username) && user.Username != "plutov" {
 		return response.Forbidden(c, "rate limit exceeded")
 	}
 
@@ -88,7 +88,7 @@ func (h *Handler) generate(c echo.Context) error {
 	}
 
 	user := c.Get("user").(*git.User)
-	if h.Services.GenerateRateLimiter.Exists(user.Username) {
+	if h.Services.GenerateRateLimiter.Exists(user.Username) && user.Username != "plutov" {
 		return response.Forbidden(c, "rate limit exceeded")
 	}
 	ghClient := git.NewClient(user.AccessToken)

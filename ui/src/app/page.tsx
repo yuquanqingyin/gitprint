@@ -50,7 +50,7 @@ export default function Home() {
             </a>
             <a
               className="cursor-pointer rounded-md border p-4"
-              href={`${process.env.NEXT_PUBLIC_API_ADDR}/files?export_id=f83865ad3248ab4541ab22419cf6fcf614d9ba76269491726b818fdd9b4342b7&ext=pdf`}
+              href={`${process.env.NEXT_PUBLIC_API_ADDR}/files?export_id=153157a6e609ba9b6e61ebd9f86780212c293581c3aead1b199f3229d8165757&ext=pdf`}
             >
               <div className="text-sm font-semibold">astral-sh/ruff-lsp</div>
               <div className="text-sm text-white">v0.0.57</div>

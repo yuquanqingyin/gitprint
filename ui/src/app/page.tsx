@@ -42,7 +42,7 @@ export default function Home() {
           <div className="mb-4 grid grid-cols-2 gap-2">
             <a
               className="cursor-pointer rounded-md border p-4"
-              href={`${process.env.NEXT_PUBLIC_API_ADDR}/files?export_id=&ext=pdf`}
+              href={`${process.env.NEXT_PUBLIC_API_ADDR}/files?export_id=966ab3afa6e76c57d2a4c8dce49a5af97dd156d7d4adb3402b80b96d40140507&ext=pdf`}
             >
               <div className="text-sm font-semibold">docker/scout-cli</div>
               <div className="text-sm text-white">v1.14.0</div>
@@ -50,7 +50,7 @@ export default function Home() {
             </a>
             <a
               className="cursor-pointer rounded-md border p-4"
-              href={`${process.env.NEXT_PUBLIC_API_ADDR}/files?export_id=&ext=pdf`}
+              href={`${process.env.NEXT_PUBLIC_API_ADDR}/files?export_id=f83865ad3248ab4541ab22419cf6fcf614d9ba76269491726b818fdd9b4342b7&ext=pdf`}
             >
               <div className="text-sm font-semibold">astral-sh/ruff-lsp</div>
               <div className="text-sm text-white">v0.0.57</div>
@@ -58,7 +58,7 @@ export default function Home() {
             </a>
             <a
               className="cursor-pointer rounded-md border p-4"
-              href={`${process.env.NEXT_PUBLIC_API_ADDR}/files?export_id=&ext=pdf`}
+              href={`${process.env.NEXT_PUBLIC_API_ADDR}/files?export_id=ea3a3990ee79da818aeea8db87ce64208bb3451d37a3dda071b27e3690178452&ext=pdf`}
             >
               <div className="text-sm font-semibold">binarly-io/efiXplorer</div>
               <div className="text-sm text-white">v6.0</div>
@@ -66,7 +66,7 @@ export default function Home() {
             </a>
             <a
               className="cursor-pointer rounded-md border p-4"
-              href={`${process.env.NEXT_PUBLIC_API_ADDR}/files?export_id=&ext=pdf`}
+              href={`${process.env.NEXT_PUBLIC_API_ADDR}/files?export_id=b8dc47617866dfe1888300ecb789d45e1b350447af77ad3b7c6aba7cf099fd0a&ext=pdf`}
             >
               <div className="text-sm font-semibold">redis/redis-vl-python</div>
               <div className="text-sm text-white">v0.3.4</div>

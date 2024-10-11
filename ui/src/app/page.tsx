@@ -42,7 +42,7 @@ export default function Home() {
           <div className="mb-4 grid grid-cols-2 gap-2">
             <a
               className="cursor-pointer rounded-md border p-4"
-              href={`${process.env.NEXT_PUBLIC_API_ADDR}/files?export_id=966ab3afa6e76c57d2a4c8dce49a5af97dd156d7d4adb3402b80b96d40140507&ext=pdf`}
+              href={`${process.env.NEXT_PUBLIC_API_ADDR}/files?export_id=dabee9e7b0dab2f5bd2a1b4f5c79929054d0fbc50126afbcb6b5af77d5fd7203&ext=pdf`}
             >
               <div className="text-sm font-semibold">docker/scout-cli</div>
               <div className="text-sm text-white">v1.14.0</div>

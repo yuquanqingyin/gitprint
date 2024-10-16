@@ -42,7 +42,7 @@ export default function Home() {
           <div className="mb-4 grid grid-cols-2 gap-2">
             <a
               className="cursor-pointer rounded-md border p-4"
-              href={`${process.env.NEXT_PUBLIC_API_ADDR}/files?export_id=f3eeba0e6bed9e1a29f7a88da1a00fb20951c92e20c1125901c9265bec17a26e&ext=pdf`}
+              href={`${process.env.NEXT_PUBLIC_API_ADDR}/files?export_id=ed6f6f9dbdc445653b1b9737367c25ea734a3b8ce5e86c88d4174e19c718650a&ext=pdf`}
             >
               <div className="text-sm font-semibold">docker/scout-cli</div>
               <div className="text-sm text-white">v1.14.0</div>
@@ -50,7 +50,7 @@ export default function Home() {
             </a>
             <a
               className="cursor-pointer rounded-md border p-4"
-              href={`${process.env.NEXT_PUBLIC_API_ADDR}/files?export_id=f1cd91fb166fccef1282197c662f54e174deef98b646e65201a1f78a2c81a1c5&ext=pdf`}
+              href={`${process.env.NEXT_PUBLIC_API_ADDR}/files?export_id=4fe527c7ae65ac12fee5a0d33b70feeaa5b43f3fd02ae612a939a613689a9445&ext=pdf`}
             >
               <div className="text-sm font-semibold">astral-sh/ruff-lsp</div>
               <div className="text-sm text-white">v0.0.57</div>
@@ -58,7 +58,7 @@ export default function Home() {
             </a>
             <a
               className="cursor-pointer rounded-md border p-4"
-              href={`${process.env.NEXT_PUBLIC_API_ADDR}/files?export_id=60b91ca0e5105ab2ede0bc22188ed59807a9693e6bf09b954128fa426a14b232&ext=pdf`}
+              href={`${process.env.NEXT_PUBLIC_API_ADDR}/files?export_id=4808a2e810e5c640a2318a31d619e4fcf04b646c7146eaeac32d0cf8371a345f&ext=pdf`}
             >
               <div className="text-sm font-semibold">binarly-io/efiXplorer</div>
               <div className="text-sm text-white">v6.0</div>
@@ -66,7 +66,7 @@ export default function Home() {
             </a>
             <a
               className="cursor-pointer rounded-md border p-4"
-              href={`${process.env.NEXT_PUBLIC_API_ADDR}/files?export_id=064480e50c1ef28403d552a25a5d7b4c336d9dd7c4c60cfb51178cfc33d6cafb&ext=pdf`}
+              href={`${process.env.NEXT_PUBLIC_API_ADDR}/files?export_id=9924e3dcdcca1af6e78bc73a886d5d2d6f526f3d85dae064d8dbe6951ef964c9&ext=pdf`}
             >
               <div className="text-sm font-semibold">redis/redis-vl-python</div>
               <div className="text-sm text-white">0.3.4</div>

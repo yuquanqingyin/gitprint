@@ -20,7 +20,7 @@ services:
       context: ./ui
       args:
         - NODE_ENV=production
-        - NEXT_PUBLIC_API_ADDR=${NEXT_PUBLIC_API_ADDR:http://localhost:9701}
+        - NEXT_PUBLIC_API_ADDR=${NEXT_PUBLIC_API_ADDR:-http://localhost:9701}
     ports:
       - "9702:3000"
   gotenberg:

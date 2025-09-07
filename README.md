@@ -27,6 +27,7 @@ make lint
 ```
 GITHUB_CLIENT_ID=
 GITHUB_CLIENT_SECRET=
+NEXT_PUBLIC_API_ADDR=https://api.gitprint.me
 ```
 
 2. Run:

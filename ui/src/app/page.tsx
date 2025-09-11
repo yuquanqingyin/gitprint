@@ -49,7 +49,7 @@ export default function Home() {
               Feel free to request features or report bugs.
             </p>
             <p className="py-2 font-bold">
-              Made by <a href="https://x.com/pliutau">@pliutau</a> with ❤️ | v0.2.0
+              Made by <a href="https://x.com/pliutau">@pliutau</a> with ❤️
             </p>
           </div>
         </div>

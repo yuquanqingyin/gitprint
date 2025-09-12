@@ -29,6 +29,15 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="dark">
+      <head>
+        {process.env.NEXT_PUBLIC_ANALYTICS_ENABLED === "true" && (
+          <script
+            src="https://t.pliutau.com/api/script.js"
+            data-site-id="2"
+            defer
+          />
+        )}
+      </head>
       <body className="flex flex-col h-screen justify-between">
         <header className="flex h-16 w-full items-center justify-center border-b">
           <div className="flex justify-center p-4 text-sm">

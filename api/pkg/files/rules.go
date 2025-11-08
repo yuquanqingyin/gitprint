@@ -64,6 +64,9 @@ var (
 		// Build files
 		"dockerfile",
 		"makefile",
+		//前端文件
+		".html", ".css", ".scss", ".sass", ".less",
+		".vue",  // 添加 Vue 文件支持
 	}
 	blacklistFileSuffixes = []string{
 		".min.css",
